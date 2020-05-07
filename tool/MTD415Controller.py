@@ -1,7 +1,6 @@
 from thorlabs_mtd415t import MTD415TDevice
 from PyQt5.QtCore import QThread, pyqtSignal, QObject
 from time import sleep
-import matplotlib.pyplot as plt
 from tool.Worker import Worker
 import csv
 import time

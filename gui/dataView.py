@@ -7,7 +7,6 @@ import numpy as np
 from tool.agilentController import Agilent1000XController
 import logging
 from tool.Worker import Worker
-import pandas as pd
 import csv
 import math
 import threading
