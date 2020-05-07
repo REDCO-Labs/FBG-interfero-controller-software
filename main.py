@@ -30,7 +30,7 @@ class App(QApplication):
         self.setAttribute(Qt.AA_EnableHighDpiScaling)
         self.setStyle("Fusion")
         self.mainWindow = MainWindow()
-        self.mainWindow.setWindowTitle("")
+        self.mainWindow.setWindowTitle("iFBG-SrainMeter")
         self.mainWindow.show()
         log.info("This is the MAIN THREAD")
 
