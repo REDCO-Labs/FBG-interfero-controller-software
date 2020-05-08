@@ -22,6 +22,7 @@ class ControlView(QWidget, Ui_controlView):
 
     def __init__(self, model=None, controller=None):
         super(ControlView, self).__init__()
+
         self.device = MTDController('COM5')
         self.allPlotsDict = {}
         self.selectedType = "tri"

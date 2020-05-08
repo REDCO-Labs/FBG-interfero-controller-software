@@ -14,25 +14,42 @@ class MTDController(QObject):
     s_data_changed = pyqtSignal(dict)
     s_pid_changed = pyqtSignal(str)
 
+    @property
+    def port(self):
+        return self._port
+
+    @port.setter
+    def port(self, value):
+        self._port = value
+        try:
+            self.new_device_initialise()
+        except Exception as e:
+            print(e)
+
     def __init__(self, port):
         super(MTDController, self).__init__()
         self.mtd = None
         self.port = port
-        self.start_connection(self.port)
-        self.mtd.clear_errors()
         try:
-            if self.mtd.is_open:
-                self.mtd.close()
-        except Exception:
-            pass
-        self.baseTemp = self.mtd.temp
-        self.setup_thread_routine()
+            self.new_device_initialise()
+        except Exception as e:
+            print(e)
         self.routineValues = {'temp': [25.0, 25.1, 25.2, 25.3, 25.4, 25.5, 25.6, 25.7, 25.8, 25.9, 26.0, 25.9, 25.8, 25.7, 25.6, 25.5, 25.4, 25.3, 25.2, 25.1], 'waitTime': 500000}
         self.actualData = {'voltage': {'x':[], 'y':[]}, 'current': {'x':[], 'y':[]}, 'temperature': {'x':[], 'y':[]}}
         self.running = 1
         self.commandRoutineFinished = 0
         self.loop = 0
         self.kwargs = {'v': False, 'c': False, 't': True}
+
+    def new_device_initialise(self):
+        try:
+            self.start_connection(self.port)
+            self.mtd.clear_errors()
+            if self.mtd.is_open:
+                self.mtd.close()
+        except Exception:
+            pass
+        self.setup_thread_routine()
 
     def set_enabled_loop(self, value):
         self.loop = value
