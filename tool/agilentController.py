@@ -4,13 +4,14 @@ import sys
 import array
 import pyvisa
 import struct
-
+import os
 
 class Agilent1000XController:
 
     def __init__(self):
         try:
-            self.ressourceManager = pyvisa.ResourceManager('C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\agvisa\\agbin\\visa32.dll')
+            ressourcePath = os.path.dirname(os.path.realpath(__file__)) + "\\visa32.dll"
+            self.ressourceManager = pyvisa.ResourceManager(ressourcePath)
             self.ressourcesList = self.ressourceManager.list_resources()
         except Exception as e:
             print(e, ":: the ressource manager couldn't find the visa32.dll . Specify the path manually.")
