@@ -57,7 +57,7 @@ class MTDController(QObject):
     def save_command(self, value):
         # commandList = list(map(float, (value.split(','))))
         self.routineValues['temp'] = value
-        print(self.routineValues['temp'])
+        # print(self.routineValues['temp'])
 
     def set_waitTime(self, time_ms):
         self.routineValues['waitTime'] = time_ms
@@ -127,7 +127,7 @@ class MTDController(QObject):
                 for i, value in enumerate(self.routineValues['temp']):
                     if self.commandRoutineFinished and self.loop==0:
                         break
-                    print(value)
+                    # print(value)
                     log.debug("Sending Command...#{}".format(i))
                     self.mtd.temp_setpoint = float(value)
                     a = time.time_ns()

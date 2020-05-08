@@ -11,15 +11,15 @@ class Agilent1000XController:
     def __init__(self):
         try:
             ressourcePath = os.path.dirname(os.path.realpath(__file__)) + "\\visa32.dll"
-            self.ressourceManager = pyvisa.ResourceManager(ressourcePath)
+            self.ressourceManager = pyvisa.ResourceManager(r"C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\agbin\visa32.dll")
             self.ressourcesList = self.ressourceManager.list_resources()
         except Exception as e:
             print(e, ":: the ressource manager couldn't find the visa32.dll . Specify the path manually.")
 
-        self.acquisitionParameters = {"timebaseScale": 0.3, "timebasePosition": 0.0, "channel1Scale": 2, "channel2Scale": 1,
-                                   "channel1Offset": 0.0, "channel2Offset": 0.0,
+        self.acquisitionParameters = {"timebaseScale": 0.1, "timebasePosition": 0.0, "channel1Scale": 0.2, "channel2Scale": 0.2,
+                                   "channel1Offset": 0.750, "channel2Offset": 0.0,
                                    "triggerMode": "EDGE", "triggerSource": "SOURCe CHANnel1",
-                                   "triggerSlope": "POS", "triggerLevel": 1, "acquisitionType": "NORMAL", "timeout":10000}
+                                   "triggerSlope": "POS", "triggerLevel": 0.8, "acquisitionType": "NORMAL", "timeout":10000}
         self.savingParameters = {}
 
         if self.ressourcesList:
@@ -84,14 +84,15 @@ class Agilent1000XController:
         self.verify_intrinsect()
         self.send_command(":TIMebase:SCALe {}".format(self.acquisitionParameters["timebaseScale"]))
         self.send_command(":TIMebase:POSition {}".format(self.acquisitionParameters["timebasePosition"]))
-        self.send_command(":CHANnel1:OFFSet {}".format(self.acquisitionParameters["channel1Offset"]))
-        self.send_command(":CHANnel2:OFFSet {}".format(self.acquisitionParameters["channel2Offset"]))
-        self.send_command(":CHANnel1:SCALe {}".format(self.acquisitionParameters["channel1Scale"]))
-        self.send_command(":CHANnel2:SCALe {}".format(self.acquisitionParameters["channel2Scale"]))
+
         self.send_command(":TRIGger:MODE {}".format(self.acquisitionParameters["triggerMode"]))
         self.send_command(":TRIGger:EDGE:SLOPe {}".format(self.acquisitionParameters["triggerSlope"]))
         self.send_command(":TRIGger:EDGE:LEVel {}".format(self.acquisitionParameters["triggerLevel"]))
         self.send_command(":ACQuire:TYPE {}".format(self.acquisitionParameters["acquisitionType"]))
+        self.send_command(":CHANnel1:OFFSet {}".format(self.acquisitionParameters["channel1Offset"]))
+        self.send_command(":CHANnel2:OFFSet {}".format(self.acquisitionParameters["channel2Offset"]))
+        self.send_command(":CHANnel1:SCALe {}".format(self.acquisitionParameters["channel1Scale"]))
+        self.send_command(":CHANnel2:SCALe {}".format(self.acquisitionParameters["channel2Scale"]))
 
     def acquisition_start(self, * args, **kwargs):
         self.send_command(":DIGitize CHANnel1")
